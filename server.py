@@ -11,7 +11,6 @@ Requires: pip install "mcp>=2"
 import json
 import re
 from pathlib import Path
-from typing import Optional
 
 from mcp.server.mcpserver import MCPServer
 
@@ -147,9 +146,9 @@ def _apply_specs(text: str, purpose: str, video_format: str, duration: str,
     """Targeted field swaps on a template prompt, mirroring the site's Customize page."""
     out = text
     if duration:
-        out = re.sub(r"\b15-second\b", duration, out)
-        out = re.sub(r"\b15 second\b", duration, out, flags=re.I)
-        out = re.sub(r"\bA ([89]\b)", r"An \1", out)  # "A 8 seconds" -> "An 8 seconds"
+        # replace the whole "A 15-second" so the article doesn't linger ("A 8 seconds")
+        out = re.sub(r"\bA 15-second\b", duration, out)
+        out = re.sub(r"\bA 15 second\b", duration, out, flags=re.I)
     if video_format and video_format.strip().lower() not in ("16:9", "1920x1080"):
         out = re.sub(r"1920x1080", video_format, out)
     spec_lines = []
@@ -185,6 +184,9 @@ def customize_prompt(base: str, purpose: str, video_format: str = "9:16",
     p = BY_SLUG.get(base)
     if not p:
         return {"error": f"unknown base '{base}'. Use a gallery slug or template id ('showreel', 'realtime-3d')."}
+    if p.get("type") == "skill":
+        return {"error": f"'{p.get('title')}' is a Claude skill, not a prompt — install it instead:",
+                "install": p.get("install"), "url": p.get("url")}
     header = (p.get("prompt") or "").rstrip()
     spec = ["## MY PROJECT", ""]
     if purpose: spec.append(f"Subject/purpose: {purpose}.")

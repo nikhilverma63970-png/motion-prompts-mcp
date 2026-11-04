@@ -10,8 +10,9 @@ plus tools to fetch and customize them for your own videos.
 | File | Contents |
 |---|---|
 | `server.py` | The MCP server (9 tools, stdio) |
-| `data/prompts.json` | 231 prompts: title, author, full prompt text, tags, video, source post, date |
-| `data/prompts.json` | 5 installable Claude skills (`npx skills add ...`) for motion graphics |
+| `install.sh` | One-shot installer: Claude Code + Antigravity + slash commands |
+| `data/prompts-1/2/3.json` | 231 prompts: title, author, full prompt text, tags, video, source post, date (sharded for upload limits; server reads all parts) |
+| `data/prompts-1/2/3.json` | 5 installable Claude skills (`npx skills add ...`) for motion graphics |
 | `data/templates.json` | The 2 "stronger" base templates: **showreel** + **realtime-3d** (three.js) |
 | `data/trending.json` | The 24 most-liked prompts, ranked |
 | `commands/` | 4 slash commands for Claude Code |
@@ -80,7 +81,8 @@ video in the library was made with, per Prompt Motion.
 ```bash
 cd ~/motion-mcp && python3 scrape_prompt_motion.py
 ```
-Re-scrapes prompt-motion.com (polite, ~1–2 min) and rewrites `data/prompts.json`.
+Re-scrapes prompt-motion.com (polite, ~1–2 min) and rewrites `data/prompts.json`
+plus the sharded `data/prompts-1/2/3.json` parts the server reads.
 Restart the MCP server afterwards.
 
 ## Credit
