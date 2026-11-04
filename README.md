@@ -22,7 +22,18 @@ plus tools to fetch and customize them for your own videos.
 
 **4 slash commands:** `/motion-search` · `/motion-make` · `/motion-trending` · `/motion-skills`
 
-## Setup (5 min, on your Mac)
+## Setup
+
+**One command** (repo must be public, or use `gh repo clone` for private):
+```bash
+git clone https://github.com/nikhilverma63970-png/motion-prompts-mcp.git ~/motion-mcp && bash ~/motion-mcp/install.sh
+```
+The installer handles everything: installs the `mcp` Python package, registers the
+server with Claude Code (`claude mcp add --scope user`), writes the Antigravity
+config (`~/.gemini/config/mcp_config.json`), and installs the 4 slash commands.
+Restart Claude Code / open a new session afterwards.
+
+**Manual setup** (if you prefer step by step):
 
 **1. Copy this folder to your Mac** (e.g. `~/motion-mcp`).
 
